@@ -7,7 +7,6 @@ import random
 from urllib.request import urlopen, Request
 import ssl 
 import certifi
-from multiprocessing.pool import ThreadPool
 
 class Scraper():
     

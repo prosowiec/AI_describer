@@ -1,0 +1,9 @@
+streamlit
+streamlit_scrollable_textbox
+openai
+bs4
+regex
+wget
+urllib
+ssl
+certifi
