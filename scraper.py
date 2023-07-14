@@ -38,9 +38,12 @@ class Scraper():
             'dnt': '1',
             'upgrade-insecure-requests': '1'}
         
-        req = Request(url, headers = headers)
-        r = urlopen(req, context=ssl.create_default_context(cafile=certifi.where()))
-        soup = BeautifulSoup(r, 'html.parser')
+        try:
+            req = Request(url, headers = headers)
+            r = urlopen(req, context=ssl.create_default_context(cafile=certifi.where()))
+            soup = BeautifulSoup(r, 'html.parser')
+        except :
+            soup = ''
         
         return soup
     
@@ -184,8 +187,12 @@ class Scraper():
     def format_technical_spec(self, raw_spec):
         raw_spec = raw_spec.replace('\n', '')
         temp = raw_spec.split('    ')
-        temp.pop(0)
-
+        
+        try:
+            temp.pop(0)
+        except:
+            return ''
+        
         alpha_temp = []
 
         j = 0
@@ -203,7 +210,11 @@ class Scraper():
                     alpha_temp.append(temp[i])
                     j += 1
             
-        alpha_temp.pop(0)
+        try:
+            alpha_temp.pop(0)
+        except:
+            return ''
+        
         tech_spec = '\n'.join(alpha_temp)
         
         return tech_spec
@@ -235,14 +246,28 @@ class Scraper():
         self.soup_pl = soup_pl.get()
         self.soup_fr = soup_fr.get()
         
-        full_desc_de = pool.apply_async(self.merge, ( self.soup_de, ))
-        full_desc_pl = pool.apply_async(self.merge, ( self.soup_pl, ))
-        full_desc_fr = pool.apply_async(self.merge, ( self.soup_fr, ))
+        full_desc_de = ''
+        if self.soup_de:
+            full_desc_de = pool.apply_async(self.merge, ( self.soup_de, ))
         
-        full_desc_de = full_desc_de.get()
-        full_desc_pl = full_desc_pl.get()
-        full_desc_fr = full_desc_fr.get()
-                
+        full_desc_pl = ''
+        if self.soup_pl:
+            full_desc_pl = pool.apply_async(self.merge, ( self.soup_pl, ))
+        
+        full_desc_fr = ''
+        if self.soup_fr:
+            full_desc_fr = pool.apply_async(self.merge, ( self.soup_fr, ))
+        
+        if self.soup_de:
+            full_desc_de = full_desc_de.get()
+        
+        if self.soup_pl:
+            full_desc_pl = full_desc_pl.get()
+        
+        if self.soup_fr:
+             full_desc_fr = full_desc_fr.get()
+        
+
         pool.close()
         pool.join()
         

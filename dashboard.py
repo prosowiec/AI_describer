@@ -18,9 +18,10 @@ if st.button('Start scraping') and asin:
     if images:
         with st.spinner():
             web_scraper.save_images()
-    
-    new_title = '<p style="font-family:sans-serif; color:Green; font-size: 25px;">Images has been saved</p>'
-    st.markdown(new_title, unsafe_allow_html=True)
+            
+        new_title = '<p style="font-family:sans-serif; color:Green; font-size: 25px;">Images has been saved</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        
     c1, c2 = st.columns([1,1])
     
     with c1:
@@ -41,7 +42,7 @@ with st.form(key="input_parameters"):
     if st.form_submit_button("Wyślij promt"):
         st.session_state.keep_graphics = True
         
-        response = chat.get_gpt_summary(promt, API)
+        response = chat.get_gpt_summary(promt, KEY)
         
         st.write("Chat response")
         stx.scrollableTextbox(response, height = 700)
