@@ -36,13 +36,13 @@ if st.button('Start scraping') and asin:
     with c3:
         stx.scrollableTextbox(descriptions["fr"], height = 700)
     
-response = ''            
+response = ''
 with st.form(key="input_parameters"):
     promt = st.text_area(label = "Opis do gpt", height=500)
     if st.form_submit_button("Wyślij promt"):
         st.session_state.keep_graphics = True
         
-        response = chat.get_gpt_summary(promt, KEY)
+        response = chat.get_gpt_summary(promt, xxx)
         
         st.write("Chat response")
         stx.scrollableTextbox(response, height = 700)
